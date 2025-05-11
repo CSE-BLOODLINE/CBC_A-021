@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoVenture - AI Travel Planner</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #8bc34a;
+            --light: #f1f8e9;
+            --dark: #1b5e20;
+            --text: #212121;
+            --text-light: #757575;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--primary);
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .planner-form {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input {
+            margin-right: 8px;
+        }
+
+        .results {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .destination-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .destination-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .destination-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .destination-info {
+            padding: 20px;
+        }
+
+        .destination-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .destination-info p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .destination-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .eco-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--white);
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span class="logo-icon">🌿</span> EcoVenture
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#planner">Plan Trip</a></li>
+                    <li><a href="#destinations">Destinations</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Discover Hidden Gems with AI-Powered Travel Planning</h1>
+            <p>Explore offbeat destinations, support local communities, and travel sustainably with our AI travel planner.</p>
+            <a href="#planner" class="btn">Plan Your Adventure</a>
+            <a href="#about" class="btn btn-outline">Learn More</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose EcoVenture?</h2>
+                <p>Our AI-powered travel planner helps you discover unique destinations while promoting sustainable tourism and supporting local communities.</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Offbeat Destinations</h3>
+                    <p>Discover hidden gems and less-traveled locations that match your preferences and travel style.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Eco-Friendly Stays</h3>
+                    <p>Find accommodations that prioritize sustainability and minimize environmental impact.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Community Experiences</h3>
+                    <p>Connect with local communities through authentic experiences that support the local economy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="planner" style="background-color: var(--white);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Plan Your Sustainable Adventure</h2>
+                <p>Tell us about your preferences, and our AI will suggest personalized offbeat destinations.</p>
+            </div>
+            <div class="planner-form">
+                <form id="travel-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="travel-style">Travel Style</label>
+                            <select id="travel-style" class="form-control" required>
+                                <option value="">Select your travel style</option>
+                                <option value="adventure">Adventure & Outdoor</option>
+                                <option value="cultural">Cultural Immersion</option>
+                                <option value="relaxation">Relaxation & Wellness</option>
+                                <option value="food">Food & Culinary</option>
+                                <option value="wildlife">Wildlife & Nature</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Budget Range</label>
+                            <select id="budget" class="form-control" required>
+                                <option value="">Select your budget</option>
+                                <option value="budget">Budget-friendly</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="luxury">Luxury</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="duration">Trip Duration (days)</label>
+                            <input type="number" id="duration" class="form-control" min="1" max="30" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="season">Preferred Season</label>
+                            <select id="season" class="form-control" required>
+                                <option value="">Select preferred season</option>
+                                <option value="spring">Spring</option>
+                                <option value="summer">Summer</option>
+                                <option value="fall">Fall</option>
+                                <option value="winter">Winter</option>
+                                <option value="any">Any season</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="interests">Interests (select all that apply)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="hiking" name="interests" value="hiking">
+                                <label for="hiking">Hiking & Trekking</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="history" name="interests" value="history">
+                                <label for="history">History & Heritage</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="beaches" name="interests" value="beaches">
+                                <label for="beaches">Beaches & Islands</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="local-cuisine" name="interests" value="local-cuisine">
+                                <label for="local-cuisine">Local Cuisine</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="wildlife" name="interests" value="wildlife">
+                                <label for="wildlife">Wildlife & Safari</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="photography" name="interests" value="photography">
+                                <label for="photography">Photography</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="festivals" name="interests" value="festivals">
+                                <label for="festivals">Local Festivals</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="crafts" name="interests" value="crafts">
+                                <label for="crafts">Arts & Crafts</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sustainability">Sustainability Preferences</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eco-accommodation" name="sustainability" value="eco-accommodation" checked>
+                                <label for="eco-accommodation">Eco-friendly Accommodation</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="local-transport" name="sustainability" value="local-transport">
+                                <label for="local-transport">Local Transportation</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="community-tourism" name="sustainability" value="community-tourism" checked>
+                                <label for="community-tourism">Community-based Tourism</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="conservation" name="sustainability" value="conservation">
+                                <label for="conservation">Conservation Projects</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="additional-info">Additional Information or Preferences</label>
+                        <textarea id="additional-info" class="form-control" rows="3" placeholder="Tell us more about what you're looking for..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Generate Recommendations</button>
+                </form>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Our AI is finding the perfect destinations for you...</p>
+            </div>
+
+            <div class="results" id="results">
+                <div class="section-title">
+                    <h2>Your Personalized Recommendations</h2>
+                    <p>Based on your preferences, here are some offbeat destinations you might love:</p>
+                </div>
+                <div class="destination-cards" id="destination-container">
+                    <!-- Destination cards will be generated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EcoVenture</h3>
+                    <p>Discover offbeat destinations while supporting local communities and sustainable tourism practices.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#planner">Plan Your Trip</a></li>
+                        <li><a href="#destinations">Destinations</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Sustainable Travel Guide</a></li>
+                        <li><a href="#">Community Tourism</a></li>
+                        <li><a href="#">Carbon Offset Programs</a></li>
+                        <li><a href="#">Travel Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><a href="mailto:info@ecoventure.com">info@ecoventure.com</a></li>
+                        <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 EcoVenture. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // AI-based recommendation system simulation
+        document.getElementById('travel-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading spinner
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            
+            // Collect form data
+            const travelStyle = document.getElementById('travel-style').value;
+            const budget = document.getElementById('budget').value;
+            const duration = document.getElementById('duration').value;
+            const season = document.getElementById('season').value;
+            
+            // Get selected interests
+            const interests = [];
+            document.querySelectorAll('input[name="interests"]:checked').forEach(function(checkbox) {
+                interests.push(checkbox.value);
+            });
+            
+            // Get sustainability preferences
+            const sustainability = [];
+            document.querySelectorAll('input[name="sustainability"]:checked').forEach(function(checkbox) {
+                sustainability.push(checkbox.value);
+            });
+            
+            const additionalInfo = document.getElementById('additional-info').value;
+            
+            // Simulate AI processing time
+            setTimeout(function() {
+                generateDestinations(travelStyle, budget, interests, sustainability, season);
+                
+                // Hide loading, show results
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('results').classList.add('active');
+                
+                // Scroll to results
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+        
+        // Function to generate destination recommendations based on user preferences
+        function generateDestinations(travelStyle, budget, interests, sustainability, season) {
+            const destinationContainer = document.getElementById('destination-container');
+            destinationContainer.innerHTML = '';
+            
+            // Sample destination data - in a real app, this would come from an AI model
+            const destinations = [
+                {
+                    name: "Munnar, Kerala, India",
+                    description: "A hidden gem in the Western Ghats with lush tea plantations, misty mountains, and rich biodiversity. Perfect for nature lovers and those seeking tranquility.",
+                    image: "https://images.unsplash.com/photo-1590766740016-10b1e6ae451c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    activities: ["Tea plantation tours", "Trekking", "Wildlife spotting", "Local cuisine"],
+                    ecoFriendly: true,
+                    communityLed: true,
+                    bestSeason: "Winter",
+                    budget: "Moderate"
+                },
+                {
+                    name: "Majuli Island, Assam, India",
+                    description: "The world's largest river island, home to unique Assamese culture, traditional crafts, and stunning river landscapes. Experience authentic village life.",
+                    image: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    activities: ["Cultural performances", "Mask making workshops", "Boat rides", "Birdwatching"],
+                    ecoFriendly: true,
+                    communityLed: true,
+                    bestSeason: "Winter",
+                    budget: "Budget-friendly"
+                },
+                {
+                    name: "Khonoma Village, Nagaland, India",
+                    description: "India's first green village, known for its terraced fields, rich Angami Naga culture, and community-led conservation efforts.",
+                    image: "https://images.unsplash.com/photo-1518002054494-3a6f94352e9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                    activities: ["Village walks", "Traditional cooking classes", "Birdwatching", "Cultural immersion"],
+                    ecoFriendly: true,
+                    communityLed: true,
+                    bestSeason: "Fall",
+                    budget: "Budget-friendly"
+                }
+            ];
+            
+            // Filter destinations based on user preferences (simplified for demo)
+            // In a real app, this would be handled by an AI model
+            
+            // Create destination cards
+            destinations.forEach(destination => {
+                const card = document.createElement('div');
+                card.className = 'destination-card';
+                
+                card.innerHTML = `
+                    <img src="${destination.image}" alt="${destination.name}" class="destination-img">
+                    <div class="destination-info">
+                        <h3>${destination.name}</h3>
+                        <p>${destination.description}</p>
+                        <div>
+                            ${destination.ecoFriendly ? '<span class="eco-badge">Eco-Friendly</span>' : ''}
+                            ${destination.communityLed ? '<span class="eco-badge">Community-Led</span>' : ''}
+                        </div>
+                        <p><strong>Best Season:</strong> ${destination.bestSeason}</p>
+                        <p><strong>Budget:</strong> ${destination.budget}</p>
+                        <p><strong>Activities:</strong> ${destination.activities.join(', ')}</p>
+                        <a href="#" class="btn" style="width: 100%; margin-top: 15px;">View Details</a>
+                    </div>
+                `;
+                
+                destinationContainer.appendChild(card);
+            });
+        }
+        
+        // Real-time destination information simulation
+        function getDestinationInfo(destinationId) {
+            // In a real app, this would fetch data from an API
+            console.log("Fetching real-time information for destination: " + destinationId);
+        }
+    </script>
+</body>
+</html>
